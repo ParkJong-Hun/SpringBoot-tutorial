@@ -1,0 +1,15 @@
+{{>layouts/navigation}}
+
+<form action="/articles/post" method="post">
+    <label>Title</label>
+    <p>
+    <input type="text" name="title"/>
+    </p>
+    <label>Content</label>
+    <p>
+    <textarea name="content"></textarea>
+    </p>
+    <button type="submit">Post</button>
+</form>
+
+{{>layouts/footer}}
