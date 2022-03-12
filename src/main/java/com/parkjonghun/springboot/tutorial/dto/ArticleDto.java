@@ -1,5 +1,7 @@
 package com.parkjonghun.springboot.tutorial.dto;
 
+import com.parkjonghun.springboot.tutorial.entity.Article;
+
 public class ArticleDto {
     private String title;
     private String content;
@@ -15,5 +17,9 @@ public class ArticleDto {
                 "title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public Article toEntity() {
+        return new Article(null, title, content);
     }
 }
