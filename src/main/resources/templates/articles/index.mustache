@@ -1,0 +1,22 @@
+{{>layouts/navigation}}
+
+<table>
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Title</td>
+            <td>Content</td>
+        </tr>
+    </thead>
+    <tbody>
+        {{#articleList}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{title}}</td>
+            <td>{{content}}</td>
+        </tr>
+        {{/articleList}}
+    </tbody>
+</table>
+
+{{>layouts/footer}}
