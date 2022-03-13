@@ -3,14 +3,16 @@ package com.parkjonghun.springboot.tutorial.controller;
 import com.parkjonghun.springboot.tutorial.dto.ArticleDto;
 import com.parkjonghun.springboot.tutorial.entity.Article;
 import com.parkjonghun.springboot.tutorial.repository.ArticleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@Slf4j //로깅 어노테이션
 public class ArticleController {
-    @Autowired //DI
+    @Autowired
     private ArticleRepository repository;
 
     @GetMapping("/articles/new")
@@ -20,14 +22,14 @@ public class ArticleController {
 
     @PostMapping("/articles/post")
     public String postNewArticle(ArticleDto form) {
-        System.out.println(form.toString());
+        log.info(form.toString());
 
-        Article entity = form.toEntity();//DTO를 Entity로 변환
-        System.out.println(entity);
+        Article entity = form.toEntity();
+        log.info(entity.toString());
 
-        Article savedDataOnDatabase = repository.save(entity);//Entity를 Repository를 이용해 데이터베이스에 저장
-        System.out.println(savedDataOnDatabase);
-p
+        Article savedDataOnDatabase = repository.save(entity);
+        log.info(savedDataOnDatabase.toString());
+
         return "";
     }
 }

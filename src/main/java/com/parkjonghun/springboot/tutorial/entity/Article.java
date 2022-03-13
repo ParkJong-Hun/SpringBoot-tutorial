@@ -1,33 +1,24 @@
 package com.parkjonghun.springboot.tutorial.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity //DB가 객체를　테이블로서 인식
+@Entity
+@AllArgsConstructor
+@ToString
 public class Article {
-
     @Id
-    @GeneratedValue //자동 생성
+    @GeneratedValue
     private Long id;
-    @Column //DB가 속성으로서 인식
+
+    @Column
     private String title;
+
     @Column
     private String content;
-
-    public Article(Long id, String title, String content) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
 }
