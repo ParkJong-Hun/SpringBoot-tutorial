@@ -1,0 +1,20 @@
+{{>layouts/navigation}}
+
+{{#article}}
+<form action="/articles/update" method="post">
+    <input name="id" type="hidden" value="{{id}}" />
+    <label>Title</label>
+    <p>
+        <input type="text" name="title" value="{{title}}"/>
+    </p>
+    <label>Content</label>
+    <p>
+        <textarea name="content">{{content}}</textarea>
+    </p>
+    <button type="submit">Put</button>
+</form>
+<hr>
+<a href="/articles/{{id}}">Back</a>
+{{/article}}
+
+{{>layouts/footer}}

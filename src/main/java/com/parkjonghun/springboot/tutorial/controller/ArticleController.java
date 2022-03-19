@@ -56,4 +56,25 @@ public class ArticleController {
 
         return "articles/index";
     }
+
+    @GetMapping("/articles/{id}/edit")
+    public String putArticle(@PathVariable Long id, Model model) {
+        Article entity = repository.findById(id).orElse(null);
+        model.addAttribute("article", entity);
+        return "articles/edit";
+    }
+
+    @PostMapping("/articles/update")
+    public String patchArticle(ArticleDto form) {
+        log.info(form.toString());
+
+        Article edited = form.toEntity();
+        log.info(edited.toString());
+
+        Article target = repository.findById(edited.getId()).orElse(null);
+        if(target != null) {
+            repository.save(edited);
+        }
+        return "redirect:/articles/" + edited.getId();
+    }
 }
