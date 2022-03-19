@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 @Controller
-@Slf4j //로깅 어노테이션
+@Slf4j
 public class ArticleController {
     @Autowired
     private ArticleRepository repository;
@@ -34,7 +34,7 @@ public class ArticleController {
         Article savedDataOnDatabase = repository.save(entity);
         log.info(savedDataOnDatabase.toString());
 
-        return "";
+        return "redirect:/articles/" + savedDataOnDatabase.getId();
     }
 
     @GetMapping("/articles/{id}")
