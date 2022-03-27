@@ -22,4 +22,9 @@ public class Article {
 
     @Column
     private String content;
+
+    public void patch(Article info) {
+        if(info.title != null) this.title = info.title;
+        if(info.content != null) this.content = info.content;
+    }
 }
