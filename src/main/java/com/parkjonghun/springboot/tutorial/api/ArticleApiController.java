@@ -2,10 +2,8 @@ package com.parkjonghun.springboot.tutorial.api;
 
 import com.parkjonghun.springboot.tutorial.dto.ArticleDto;
 import com.parkjonghun.springboot.tutorial.entity.Article;
-import com.parkjonghun.springboot.tutorial.repository.ArticleRepository;
+import com.parkjonghun.springboot.tutorial.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,52 +16,40 @@ import java.util.List;
 public class ArticleApiController {
 
     @Autowired
-    private ArticleRepository repository;
+    private ArticleService service;
 
-    //Get
     @GetMapping("/api/articles")
-    public List<Article> getArticles() {
-        return (List<Article>)repository.findAll();
+    public ResponseEntity<List<Article>> getArticles() {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getArticles());
     }
 
     @GetMapping("/api/articles/{id}")
-    public Article getArticle(@PathVariable Long id) {
-        return repository.findById(id).orElse(null);
+    public ResponseEntity<Article> getArticle(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getArticle(id));
     }
 
-    //Post
     @PostMapping("/api/articles")
-    public Article postArticle(@RequestBody ArticleDto dto) {
-        Article target = dto.toEntity();
-        return repository.save(target);
+    public ResponseEntity<Article> postArticle(@RequestBody ArticleDto dto) {
+        Article target = service.postArticle(dto);
+        return (target != null) ? ResponseEntity.status(HttpStatus.CREATED).body(target) : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    //Put
     @PutMapping("/api/articles/{id}")
     public ResponseEntity<Article> putArticle(@PathVariable Long id, @RequestBody ArticleDto dto) {
-        Article info = dto.toEntity();
-        Article target = repository.findById(id).orElse(null);
-        if(target == null || !id.equals(info.getId()) || info.getTitle() == null || info.getContent() == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return ResponseEntity.status(HttpStatus.OK).body(repository.save(target));
+        Article target = service.putArticle(id, dto);
+        return (target == null) ? ResponseEntity.status(HttpStatus.BAD_REQUEST).build() : ResponseEntity.status(HttpStatus.OK).body(target);
     }
 
-    //Patch
     @PatchMapping("/api/articles/{id}")
     public ResponseEntity<Article> patchArticle(@PathVariable Long id, @RequestBody ArticleDto dto) {
-        Article info = dto.toEntity();
-        Article target = repository.findById(id).orElse(null);
-        if(target == null || !id.equals(info.getId()))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        target.patch(info);
-        return ResponseEntity.status(HttpStatus.OK).body(repository.save(target));
+        Article target = service.patchArticle(id, dto);
+        return (target == null) ? ResponseEntity.status(HttpStatus.BAD_REQUEST).build() :
+         ResponseEntity.status(HttpStatus.OK).body(target);
     }
 
     @DeleteMapping("/api/articles/{id}")
     public ResponseEntity<Article> deleteArticle(@PathVariable Long id) {
-        Article target = repository.findById(id).orElse(null);
-        if(target == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        repository.delete(target);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        Article target = service.deleteArticle(id);
+        return (target == null) ? ResponseEntity.status(HttpStatus.BAD_REQUEST).build() : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
